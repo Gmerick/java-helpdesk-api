@@ -1,0 +1,32 @@
+### Crie um chamado; copie o id recebido para as próximas requisições
+POST http://localhost:8081/api/tickets
+Content-Type: application/json
+
+{"title":"VPN indisponível","description":"Usuário fictício sem acesso à rede de laboratório","priority":"HIGH"}
+
+### Liste os abertos
+GET http://localhost:8081/api/tickets?status=OPEN&limit=20&offset=0
+
+### Assuma o chamado (troque 1 pelo id retornado)
+PATCH http://localhost:8081/api/tickets/1/status
+Content-Type: application/json
+
+{"status":"IN_PROGRESS","note":"Iniciando diagnóstico"}
+
+### Resolva
+PATCH http://localhost:8081/api/tickets/1/status
+Content-Type: application/json
+
+{"status":"RESOLVED","note":"Configuração corrigida no laboratório"}
+
+### Consulte o histórico
+GET http://localhost:8081/api/tickets/1/history
+
+### Indicadores
+GET http://localhost:8081/api/tickets/summary
+
+### Erro esperado 409: RESOLVED não pode voltar diretamente a OPEN
+PATCH http://localhost:8081/api/tickets/1/status
+Content-Type: application/json
+
+{"status":"OPEN","note":"Tentativa inválida"}

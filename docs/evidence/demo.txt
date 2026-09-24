@@ -1,0 +1,45 @@
+POST /api/tickets -> 201
+PATCH /api/tickets/1/status -> 409
+PATCH /api/tickets/1/status -> 200
+PATCH /api/tickets/1/status -> 200
+PATCH /api/tickets/1/status -> 200
+PATCH /api/tickets/1/status -> 409
+GET /api/tickets/1/history -> 200
+[
+  {
+    "id": 1,
+    "from": null,
+    "to": "OPEN",
+    "note": "Chamado criado",
+    "createdAt": "2026-09-24T22:30:42.897124"
+  },
+  {
+    "id": 2,
+    "from": "OPEN",
+    "to": "IN_PROGRESS",
+    "note": "Etapa de laboratorio",
+    "createdAt": "2026-09-24T22:30:42.997817"
+  },
+  {
+    "id": 3,
+    "from": "IN_PROGRESS",
+    "to": "RESOLVED",
+    "note": "Etapa de laboratorio",
+    "createdAt": "2026-09-24T22:30:43.009321"
+  },
+  {
+    "id": 4,
+    "from": "RESOLVED",
+    "to": "CLOSED",
+    "note": "Etapa de laboratorio",
+    "createdAt": "2026-09-24T22:30:43.018372"
+  }
+]
+GET /api/tickets/summary -> 200
+{
+  "OPEN": 0,
+  "IN_PROGRESS": 0,
+  "RESOLVED": 0,
+  "CLOSED": 1
+}
+DEMO OK: fluxo, conflitos e auditoria conferidos.
