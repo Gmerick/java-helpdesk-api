@@ -31,3 +31,9 @@ Autorrevisão pelo mesmo executor responsável pela implementação, sem alegaç
 Não executados: Windows/PowerShell nativo, Docker/Compose, AWS e bancos diferentes de H2. Não houve teste de carga, auditoria de segurança ou validação de uso em produção. Os exemplos PowerShell são uma alternativa de uso; o demo Python e o fluxo HTTP foram executados no Linux.
 
 O workflow Java CI está incluído para compilar e testar pushes em main e pull requests. Seu resultado remoto deve ser conferido na aba Actions do commit; os resultados acima são da execução local, não uma simulação de CI remoto.
+
+## Interface web — 1.1.0
+
+A interface inclui testes Playwright dos fluxos pelo navegador, validações de entrada, recuperação após falha de conexão e layout a 390 px. O CI executa os testes contra o JAR real e banco H2 em memória. Capturas de desktop/celular estão em `docs/screenshots`; elas usam dados fictícios de teste.
+
+Confira a execução correspondente ao commit na aba Actions para a evidência definitiva do estado atual. A entrega do ZIP é bloqueada caso Java ou navegador falhe. A revisão de código foi feita pelo mesmo executor da implementação.

@@ -44,6 +44,6 @@ function form(title,fields,submit,save='Salvar',intro=''){
  };
 }
 function empty(message='Nenhum registro por aqui',hint='Comece pelo botão acima para adicionar o primeiro registro.'){return `<div class="empty"><strong>${message}</strong><p>${hint}</p></div>`;}
-function table(headers,rows){return `<div class="table-scroll"><table><thead><tr>${headers.map(x=>`<th scope="col">${x}</th>`).join('')}</tr></thead><tbody>${rows.join('')}</tbody></table></div>`;}
+function table(headers,rows){return `<p class="table-hint">Deslize a tabela para ver todas as colunas.</p><div class="table-scroll"><table><thead><tr>${headers.map(x=>`<th scope="col">${x}</th>`).join('')}</tr></thead><tbody>${rows.join('')}</tbody></table></div>`;}
 function pageControls(offset,hasNext){return `<div class="pagination"><span>Página ${Math.floor(offset/20)+1} · até 20 registros</span><div><button class="secondary" id="prev" ${offset?'':'disabled'}>Anterior</button><button class="secondary" id="next" ${hasNext?'':'disabled'}>Próxima</button></div></div>`;}
 function showError(error){$('#error span').textContent=error.message;$('#error').hidden=false;}
