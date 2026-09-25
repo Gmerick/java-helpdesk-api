@@ -1,4 +1,13 @@
-# Helpdesk API · Java & Spring Boot
+# DeskFlow · Java com interface web
+
+## Interface web · versão 1.1.0
+
+![Tela do DeskFlow](docs/screenshots/desktop.png)
+
+Execute `java -jar target/app.jar` e abra **http://localhost:8081**. Use os formulários e botões para cadastrar e acompanhar seus dados. [Guia da interface e atualização](docs/INTERFACE.md).
+
+O front-end responsivo é embarcado no JAR, sem instalação de Node para o usuário. A automação em **Actions** valida Java e fluxos de navegador e entrega um ZIP Windows com iniciador e checksum. Publicações versionadas ficam disponíveis pelo workflow **Publicar versão**.
+
 
 API REST para abertura e acompanhamento de chamados técnicos, com prioridade, histórico e regras de mudança de status.
 
@@ -21,7 +30,7 @@ mvn clean verify
 java -jar target/app.jar
 ```
 
-A API inicia em **http://localhost:8081**. Não existe página HTML na raiz; use os endpoints abaixo. O banco H2 é persistido em `data/helpdesk.mv.db`. Para testar a resposta pelo navegador, abra `http://localhost:8081/api/tickets/summary`.
+A API inicia em **http://localhost:8081**. A interface de uso está disponível na raiz `/`; os endpoints REST continuam disponíveis. O banco H2 é persistido em `data/helpdesk.mv.db`. Para testar a resposta pelo navegador, abra `http://localhost:8081/api/tickets/summary`.
 
 Em outro terminal, se tiver Python 3 instalado, rode a demonstração automática:
 

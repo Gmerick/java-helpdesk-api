@@ -1,0 +1,49 @@
+name: Publicar versão
+on:
+  workflow_dispatch:
+    inputs:
+      version:
+        description: 'Versão inédita (ex.: v1.1.0)'
+        required: true
+        type: string
+permissions:
+  contents: read
+concurrency:
+  group: release-${{ inputs.version }}
+  cancel-in-progress: false
+jobs:
+  release:
+    if: github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '17'
+          cache: maven
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: npm
+      - name: Validar versão inédita
+        env:
+          VERSION: ${{ inputs.version }}
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          [[ "$VERSION" =~ ^v[0-9]+\.[0-9]+\.[0-9]+$ ]] || exit 1
+          if gh release view "$VERSION" >/dev/null 2>&1; then echo 'Versão já publicada'; exit 1; fi
+          if git ls-remote --exit-code --tags origin "refs/tags/$VERSION" >/dev/null 2>&1; then echo 'Tag já existente'; exit 1; fi
+      - run: mvn --batch-mode --no-transfer-progress clean verify
+      - run: npm ci
+      - run: npx playwright install --with-deps chromium
+      - run: npm run test:ui
+      - run: python scripts/package.py
+      - name: Publicar pacote validado
+        env:
+          VERSION: ${{ inputs.version }}
+          GH_TOKEN: ${{ github.token }}
+        run: gh release create "$VERSION" dist/* --target "$GITHUB_SHA" --title "$VERSION — interface web" --generate-notes

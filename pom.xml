@@ -9,7 +9,7 @@
   </parent>
   <groupId>io.github.gmerick</groupId>
   <artifactId>java-helpdesk-api</artifactId>
-  <version>1.0.0</version>
+  <version>1.1.0</version>
   <name>java-helpdesk-api</name>
   <description>Projeto didatico Java para portfolio de desenvolvimento junior</description>
   <properties>

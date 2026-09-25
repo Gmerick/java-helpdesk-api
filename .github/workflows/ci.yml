@@ -1,14 +1,18 @@
-name: Java CI
+name: CI/CD — Java e interface
 on:
   push:
-    branches: [main]
+    branches: [main, feat/web-ui]
   pull_request:
+  workflow_dispatch:
 permissions:
   contents: read
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
 jobs:
-  test:
+  validate-and-package:
     runs-on: ubuntu-latest
-    timeout-minutes: 15
+    timeout-minutes: 20
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-java@v4
@@ -16,5 +20,37 @@ jobs:
           distribution: temurin
           java-version: '17'
           cache: maven
-      - name: Test and package
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: npm
+      - name: Testes Java e compilação
         run: mvn --batch-mode --no-transfer-progress clean verify
+      - run: npm ci
+      - run: npx playwright install --with-deps chromium
+      - name: Fluxos reais no navegador
+        run: npm run test:ui
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: telas-interface
+          path: test-results/overview-*.png
+          if-no-files-found: ignore
+          retention-days: 7
+      - name: Pacote Windows e checksum
+        run: python scripts/package.py
+      - uses: actions/upload-artifact@v4
+        with:
+          name: java-helpdesk-api-windows
+          path: dist/*
+          if-no-files-found: error
+          retention-days: 30
+      - uses: actions/upload-artifact@v4
+        if: failure()
+        with:
+          name: diagnostico-testes
+          path: |
+            playwright-report/
+            test-results/
+            target/surefire-reports/
+          retention-days: 7

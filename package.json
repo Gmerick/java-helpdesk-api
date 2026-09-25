@@ -1,0 +1,11 @@
+{
+  "name": "java-helpdesk-api-ui-checks",
+  "private": true,
+  "version": "1.1.0",
+  "scripts": {
+    "test:ui": "playwright test"
+  },
+  "devDependencies": {
+    "@playwright/test": "1.63.0"
+  }
+}
